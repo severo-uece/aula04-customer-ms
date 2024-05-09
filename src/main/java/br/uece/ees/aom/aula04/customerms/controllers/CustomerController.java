@@ -1,7 +1,11 @@
 package br.uece.ees.aom.aula04.customerms.controllers;
 
 import java.util.List;
+import java.util.Random;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +28,11 @@ public class CustomerController {
 
 	private CustomerService customerService;
 
+	@Value("${spring.application.name}")
+    private String applicationName;
+
+    private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
+
 	public CustomerController(Environment env, CustomerService customerService) {
 		this.customerService = customerService;
 	}
@@ -40,7 +49,21 @@ public class CustomerController {
 
 	@GetMapping("/{id}")
 	public CustomerDto findById(@PathVariable("id") Long id) {
+		logger.info("Requisição recebida em {} no endpoint /id ", applicationName);
 		return customerService.findCustomerById(id);
+	}
+
+	// Uso de Record para não criar um novo DTO
+	@GetMapping("/{id}/credit-card")
+	public CreditCardDto findCreditCardById(@PathVariable("id") Long id) {
+		logger.info("Requisição recebida em {} no endpoint /id/credit-card ", applicationName);
+
+		// Simulando tempo de pagamento em uma plataforma de pagamentos
+        Random random = new Random();
+        double waitTime = 300 + (random.nextInt(2) * 1000);
+        try {Thread.sleep((int) waitTime);} catch(Exception ignored) {}
+
+		return new CreditCardDto("4007702835532454", "000");
 	}
 
 	@PostMapping()
@@ -60,3 +83,5 @@ public class CustomerController {
 	}
 
 }
+
+record CreditCardDto(String cardNumber, String cardCCV){}

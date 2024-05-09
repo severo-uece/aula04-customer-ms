@@ -11,6 +11,7 @@ import br.uece.ees.aom.aula04.customerms.model.entity.Customer;
 public interface CustomerRepository extends CrudRepository<Customer, Long> {
 	
 	@Override
+	@SuppressWarnings("null")
     List<Customer> findAll();
 	
 	//	Query automática gerada pela sintaxe da JPA

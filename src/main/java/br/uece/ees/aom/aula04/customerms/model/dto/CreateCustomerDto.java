@@ -1,14 +1,9 @@
 package br.uece.ees.aom.aula04.customerms.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class CreateCustomerDto {
 
-	@JsonProperty("nome")
 	private String name;
-	@JsonProperty("idade")
 	private Integer age;
-	@JsonProperty("email")
 	private String email;
 
 	public String getName() {
